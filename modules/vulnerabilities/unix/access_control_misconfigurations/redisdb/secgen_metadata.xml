@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<vulnerability xmlns="http://www.github/cliffe/SecGen/vulnerability"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.github/cliffe/SecGen/vulnerability">
+
+  <name>Redis Unauthenticated Access Data Leak</name>
+  <author>William Smith</author>
+  <module_license>MIT</module_license>
+  <description>Redis is configured to listen on all interfaces with protected-mode disabled, allowing unauthenticated remote access.</description>
+
+  <type>Redis</type>
+  <access>remote</access>
+  <platform>linux</platform>
+
+  <difficulty>low</difficulty>
+  <software_name>redis-server</software_name>
+  <software_license>RSALv2</software_license>
+
+  <!-- keep ONE primary fact -->
+  <read_fact>strings_to_leak</read_fact>
+
+  <default_input into="strings_to_leak">
+    <generator type="flag_generator"/>
+  </default_input>
+
+  <!-- MUST provide 2 filenames because puppet uses [0] and [1] -->
+  <default_input into="leaked_filenames">
+    <generator type="filename_generator"/>
+    <generator type="filename_generator"/>
+  </default_input>
+
+  <hint>Try scanning for Redis (6379/tcp).</hint>
+  <solution>Connect using redis-cli, list keys (KEYS *), then GET the stored values.</solution>
+
+  <conflict>
+    <software_name>redis-server</software_name>
+  </conflict>
+
+</vulnerability>
+
