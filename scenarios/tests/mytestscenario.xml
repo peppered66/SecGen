@@ -8,13 +8,13 @@
   <author>William Smith</author>
 
   <description>
-    Provisions a Debian target with Redis installed + misconfigured via the redisdb Puppet module,
-    and loads two leaked strings into Redis under two chosen keys.
+    Provisions a Debian target with Redis installed + misconfigured via the redisdb Puppet module.
   </description>
 
   <type>ctf</type>
   <difficulty>easy</difficulty>
 
+    <!-- provision attacker vm -->
   <system>
     <system_name>attack_vm</system_name>
     <base distro="Kali" name="MSF"/>
@@ -47,8 +47,9 @@
     </build>
   </system>
 
+    <!-- provision basic testing VM -->
   <system>
-    <system_name>redis_target</system_name>
+    <system_name>target_vm</system_name>
     <base distro="Debian 12" type="desktop" name="KDE"/>
 
     <network type="private_network">
@@ -57,7 +58,10 @@
       </input>
     </network>
 
+      <!-- Vulnerablity module specified to install -->
     <vulnerability module_path=".*redisdb" privilege="user_rwx" access="remote" read_fact="strings_to_leak">
+      
+      <!-- SecGen parameters used (strings to leak and filenames) -->
       <input into="strings_to_leak">
         <generator type="flag_generator" module_path=".*/flag_words"/>
       </input>
