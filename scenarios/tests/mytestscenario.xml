@@ -30,9 +30,6 @@
       </input>
     </utility>
 
-    <utility module_path=".*/kali_top10"/>
-    <utility module_path=".*/kali_web"/>
-
     <network type="private_network">
       <input into="IP_address">
         <datastore access="0">IP_addresses</datastore>
@@ -61,7 +58,7 @@
     </network>
 
     <!-- Vulnerablity module specified to install -->
-    <vulnerability module_path=".*redisdb" privilege="user_rwx" access="remote" read_fact="strings_to_leak">
+    <vulnerability module_path=".*/redisdb/" privilege="user_rwx" access="remote" read_fact="strings_to_leak">
 
       <!-- SecGen parameters used (strings to leak and filenames) -->
       <input into="strings_to_leak">
