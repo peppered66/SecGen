@@ -43,9 +43,11 @@
     <base distro="Debian 12" type="desktop" name="KDE"/>
 
     <!-- Vulnerability module -->
-    <vulnerability module_path=".*redisdb.*" privilege="user_rwx" access="remote">
+    <vulnerability module_path=".*redisdb.*">
       <input into="strings_to_leak">
         <generator type="flag_generator"/>
+        <!-- <generator type="message"/> -->
+        <value>hard coded message</value>
       </input>
 
       <!-- Puppet needs two filenames: [0] and [1] -->
