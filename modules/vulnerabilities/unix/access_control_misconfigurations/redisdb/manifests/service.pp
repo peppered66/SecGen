@@ -1,4 +1,4 @@
- class redisdb::config {
+ class redisdb::service {
  
  #Creates a service for our redis install
   service { 'redis-server':
