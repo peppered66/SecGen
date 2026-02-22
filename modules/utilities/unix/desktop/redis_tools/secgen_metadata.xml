@@ -12,9 +12,5 @@
   <type>tools</type>
   <platform>unix</platform>
 
-  <difficulty>low</difficulty>
-
-  <software_name>redis-tools</software_name>
-  <software_license>various</software_license>
 
 </utility>

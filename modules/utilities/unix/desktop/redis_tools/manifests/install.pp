@@ -1,4 +1,4 @@
-class redis_tools {
+class redis_tools::install{
   package { 'redis-tools':
     ensure => installed,
   }
