@@ -19,10 +19,9 @@
     <base distro="Kali" name="MSF"/>
 
     <!-- Installs redis tools on attacker vm -->
-
     <utility module_path=".*redis_tools.*"/>
 
-
+    <!-- Adds default kali user to system -->
     <utility module_path=".*/parameterised_accounts">
       <input into="accounts">
         <value>{"username":"kali","password":"kali","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
@@ -34,7 +33,8 @@
       <value>172.16.0.2</value> <!-- attacker -->
       <value>172.16.0.3</value> <!-- target -->
     </input>
-    
+
+    <!-- Declaring private network for target and attack VM to share -->
     <network type="private_network">
       <input into="IP_address">
         <datastore access="0">IP_addresses</datastore>
@@ -53,8 +53,6 @@
         <value>{"username":"test","password":"tiaspbiqe2r","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
       </input>
     </utility>
-
-
  
     <!-- Vulnerability module -->
     <vulnerability module_path=".*redisdb.*">
@@ -64,8 +62,8 @@
 
       <!-- Puppet needs two filenames: [0] and [1] -->
       <input into="leaked_filenames">
-        <value>file1</value>
-        <value>file2</value>
+        <generator type="filename_generator" />
+        <generator type="filename_generator" />
       </input>
 
       <!-- Optional, but follows the wordpress template pattern -->
