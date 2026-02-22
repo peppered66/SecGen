@@ -1,5 +1,5 @@
 class maria_client::install{
-  package {'maria-client':
+  package {'mariadb-client':
   ensure => installed,
 }
 }
