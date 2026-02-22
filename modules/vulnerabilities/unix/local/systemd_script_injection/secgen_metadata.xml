@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<vulnerability xmlns="http://www.github/cliffe/SecGen/vulnerability"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.github/cliffe/SecGen/vulnerability">
+
+  <name>Systemd script injection</name>
+  <author>William Smith</author>
+  <module_license>MIT</module_license>
+  <description>Systemd runs a service as root which executes a vulnerable script.</description>
+
+  <type>systemd</type>
+  <privilege>user</privilege>
+  <access>local</access>
+  <platform>linux</platform>
+
+  <hint>To be implemented.</hint> 
+  <solution>Discover the script, edit it to spawn a privileged shell within a directory you can access.</solution> 
+
+
+</vulnerability>
