@@ -1,2 +1,2 @@
 include mariadb::install
-include mariadb::install
+include mariadb::service

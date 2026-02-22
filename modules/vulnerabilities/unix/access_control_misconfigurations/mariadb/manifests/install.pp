@@ -23,7 +23,6 @@ class mariadb::install{
   group   => 'root',
   mode    => '0644',
   require => Package['mariadb-server'],
-  notify  => Service['mariadb'],
   }
 
  #Creates directory to store files
@@ -49,42 +48,35 @@ class mariadb::install{
   }
 
  #Runs maria command to create the database and table within service
- exec { 'create_database_and_table':
-  command => '/usr/bin/mysql -u root -e "
-    CREATE DATABASE IF NOT EXISTS database;
-    USE database;
-    CREATE TABLE IF NOT EXISTS files (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(50),
-      content TEXT
-    );
-  "',
+exec { 'create_database_and_table':
+  command => '/usr/bin/mysql -u root -e "CREATE DATABASE IF NOT EXISTS datadb; CREATE TABLE IF NOT EXISTS datadb.files (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), content TEXT);"',
   path    => ['/usr/bin', '/bin'],
   require => Service['mariadb'],
- }
+}
+ 
 
  #Runs maria command to insert the first file into the database
  exec { 'insert_mariatext1_into_maria':
-  command => "/bin/sh -c '/usr/bin/mysql -u root database -e \"INSERT INTO files (name, content) VALUES (\\\"${mariafilename1}\\\", \\\"$(cat /opt/mariadb-files/mariatext1.txt)\\\");\"'",
+  command => "/bin/sh -c '/usr/bin/mysql -u root datadb -e \"INSERT INTO files (name, content) VALUES (\\\"${mariafilename1}\\\", \\\"$(cat /opt/mariadb-files/mariatext1.txt)\\\");\"'",
   path    => ['/usr/bin', '/bin'],
   require => [
     Exec['create_database_and_table'],
     File['/opt/mariadb-files/mariatext1.txt'],
     Service['mariadb'],
   ],
-  unless  => "/usr/bin/mysql -u root database -N -s -e \"SELECT 1 FROM files WHERE name='${mariafilename1}' LIMIT 1;\" | /bin/grep -q 1",
+  unless  => "/usr/bin/mysql -u root datadb -N -s -e \"SELECT 1 FROM files WHERE name='${mariafilename1}' LIMIT 1;\" | /bin/grep -q 1",
  }
 
   #Runs maria command to insert the second file into the database
   exec { 'insert_mariatext2_into_maria':
-  command => "/bin/sh -c '/usr/bin/mysql -u root database -e \"INSERT INTO files (name, content) VALUES (\\\"${mariafilename2}\\\", \\\"$(cat /opt/mariadb-files/mariatext2.txt)\\\");\"'",
+  command => "/bin/sh -c '/usr/bin/mysql -u root datadb -e \"INSERT INTO files (name, content) VALUES (\\\"${mariafilename2}\\\", \\\"$(cat /opt/mariadb-files/mariatext2.txt)\\\");\"'",
   path    => ['/usr/bin', '/bin'],
   require => [
     Exec['create_database_and_table'],
     File['/opt/mariadb-files/mariatext2.txt'],
     Service['mariadb'],
   ],
-  unless  => "/usr/bin/mysql -u root database -N -s -e \"SELECT 1 FROM files WHERE name='${mariafilename2}' LIMIT 1;\" | /bin/grep -q 1",
+  unless  => "/usr/bin/mysql -u root datadb -N -s -e \"SELECT 1 FROM files WHERE name='${mariafilename2}' LIMIT 1;\" | /bin/grep -q 1",
  }
 
   #Runs maria command to add MYSQL anonymous user to database with elevated privilege
