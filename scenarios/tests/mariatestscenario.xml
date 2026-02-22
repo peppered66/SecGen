@@ -18,6 +18,9 @@
     <system_name>attack_vm</system_name>
     <base distro="Kali" name="MSF"/>
 
+   <!-- Installs redis tools on attacker vm -->
+    <utility module_path=".*maria_client.*"/>
+
     <!-- Adds default kali user to system -->
     <utility module_path=".*/parameterised_accounts">
       <input into="accounts">
