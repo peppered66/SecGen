@@ -21,7 +21,7 @@
     <!-- Adds default kali user to system -->
     <utility module_path=".*/parameterised_accounts">
       <input into="accounts">
-        <value>{"username":"kali","password":"kali","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
+        <value>{"username":"kali","password":"kali","super_user":"true"}</value>
       </input>
     </utility>
 
@@ -47,7 +47,7 @@
       <!-- provision test account -->
     <utility module_path=".*/parameterised_accounts">
       <input into="accounts">
-        <value>{"username":"test","password":"tiaspbiqe2r","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
+        <value>{"username":"test","password":"tiaspbiqe2r","super_user":"true"}</value>
       </input>
     </utility>
  

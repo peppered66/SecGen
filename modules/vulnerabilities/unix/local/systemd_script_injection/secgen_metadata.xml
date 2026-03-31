@@ -9,7 +9,7 @@
   <description>Systemd runs a service as root which executes a vulnerable script.</description>
 
   <type>systemd</type>
-  <privilege>user</privilege>
+  <privilege>user_rw</privilege>
   <access>local</access>
   <platform>linux</platform>
 
