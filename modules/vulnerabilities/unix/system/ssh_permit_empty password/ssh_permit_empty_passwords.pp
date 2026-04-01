@@ -1,0 +1,1 @@
+include config::ssh_permit_empty_passwords
