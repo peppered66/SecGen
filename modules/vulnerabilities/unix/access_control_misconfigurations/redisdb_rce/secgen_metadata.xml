@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<vulnerability xmlns="http://www.github/cliffe/SecGen/vulnerability"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.github/cliffe/SecGen/vulnerability">
+
+  <name>Redis Replication Remote Code Execution</name>
+  <author>William Smith</author>
+  <module_license>MIT</module_license>
+  <description>
+    Redis is configured to listen on all interfaces with protected-mode disabled and no authentication,
+    allowing unauthenticated remote access. A learner can discover the service through network scanning
+    and exploit it for remote code execution using Metasploit.
+  </description>
+
+  <type>redis</type>
+  <type>remote_code_execution</type>
+  <privilege>user_rwx</privilege>
+  <access>remote</access>
+  <platform>linux</platform>
+
+  <read_fact>strings_to_leak</read_fact>
+  <read_fact>leaked_filenames</read_fact>
+  <read_fact>strings_to_store</read_fact>
+
+  <default_input into="strings_to_leak">
+    <generator type="flag_generator"/>
+  </default_input> 
+
+  <default_input into="strings_to_store">
+  <encoder name="Random String Selector">
+    <value>Weekly backup completed successfully.</value>
+    <value>User session cache initialised.</value>
+    <value>Maintenance task completed normally.</value>
+  </encoder>
+    <encoder name="Random String Selector">
+      <value>Quarterly report export completed.</value>
+      <value>Session token cleanup finished.</value>
+      <value>Background task completed successfully.</value>
+      </encoder>
+</default_input>
+
+  <!-- MUST provide 2 filenames because puppet uses [0] and [1] -->
+  <default_input into="leaked_filenames">
+    <generator type="filename_generator"/>
+    <generator type="filename_generator"/>
+  </default_input> 
+
+  <hint>Try scanning for Redis on 6379/tcp and investigate whether it is exposed without authentication.</hint>
+  <solution>Discover the Redis service, exploit it using Metasploit's redis replication RCE module, obtain command execution, and retrieve the flag from /var/lib/redis.</solution>
+
+  <conflict>
+    <software_name>redis_server</software_name>
+  </conflict>
+
