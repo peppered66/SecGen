@@ -7,9 +7,9 @@
   <author>William Smith</author>
   <module_license>MIT</module_license>
   <description>
-    Redis is configured to listen on all interfaces with protected-mode disabled and no authentication,
-    allowing unauthenticated remote access. A learner can discover the service through network scanning
-    and exploit it for remote code execution using Metasploit.
+    Redis is configured to listen on all interfaces with protected-mode disabled,
+    allowing unauthenticated remote access. The service can be enumerated and
+    exploited for remote code execution.
   </description>
 
   <type>redis</type>
@@ -24,31 +24,18 @@
 
   <default_input into="strings_to_leak">
     <generator type="flag_generator"/>
-  </default_input> 
+  </default_input>
 
-  <default_input into="strings_to_store">
-  <encoder name="Random String Selector">
-    <value>Weekly backup completed successfully.</value>
-    <value>User session cache initialised.</value>
-    <value>Maintenance task completed normally.</value>
-  </encoder>
-    <encoder name="Random String Selector">
-      <value>Quarterly report export completed.</value>
-      <value>Session token cleanup finished.</value>
-      <value>Background task completed successfully.</value>
-      </encoder>
-</default_input>
-
-  <!-- MUST provide 2 filenames because puppet uses [0] and [1] -->
   <default_input into="leaked_filenames">
     <generator type="filename_generator"/>
     <generator type="filename_generator"/>
-  </default_input> 
+  </default_input>
 
-  <hint>Try scanning for Redis on 6379/tcp and investigate whether it is exposed without authentication.</hint>
-  <solution>Discover the Redis service, exploit it using Metasploit's redis replication RCE module, obtain command execution, and retrieve the flag from /var/lib/redis.</solution>
+  <hint>Try scanning for Redis on 6379/tcp.</hint>
+  <solution>Enumerate the Redis service, exploit it using Metasploit, then retrieve the flag from /var/lib/redis.</solution>
 
   <conflict>
     <software_name>redis_server</software_name>
   </conflict>
 
+</vulnerability>

@@ -83,6 +83,14 @@ command => "/bin/sh -c 'redis-cli SET ${redisfilename2} \"\$(cat /opt/redis-file
 unless  => "/usr/bin/redis-cli EXISTS ${redisfilename2} | /bin/grep -q '^1\$'",
  }
 
+#removes corrupted file due to inserting flags within working directory discovered during testing
+exec { 'remove-corrupt-rdb':
+  command => '/bin/rm -f /var/lib/redis/dump.rdb',
+  before  => Service['redis-server'],
+  require => Package['redis-server'],
+}
+
+
  ::secgen_functions::leak_files { 'redis-db-flag-leak':
     storage_directory => '/var/lib/redis',
     leaked_filenames  => $leaked_filenames,
