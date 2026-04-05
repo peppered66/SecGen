@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<scenario xmlns="http://www.github/cliffe/SecGen/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.github/cliffe/SecGen/scenario">
+
+  <name>RedisDB RCE test: Kali + Debian 12 KDE</name>
+  <author>William Smith</author>
+  <description>
+    Provisions a Kali attacker VM and a Debian 12 KDE target VM with the redisdb_rce vulnerability module applied.
+  </description>
+
+  <type>ctf</type>
+  <difficulty>medium</difficulty>
+
+  <system>
+    <system_name>attack_vm</system_name>
+    <base distro="Kali" name="MSF"/>
+
+    <utility module_path=".*redis_tools.*"/>
+
+    <utility module_path=".*/parameterised_accounts">
+      <input into="accounts">
+        <value>{"username":"kali","password":"kali","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
+      </input>
+    </utility>
+
+    <input into_datastore="IP_addresses">
+      <value>172.16.0.2</value>
+      <value>172.16.0.3</value>
+    </input>
+
+    <network type="private_network">
+      <input into="IP_address">
+        <datastore access="0">IP_addresses</datastore>
+      </input>
+    </network>
+  </system>
+
+  <system>
+    <system_name>target_vm</system_name>
+    <base distro="Debian 12" type="desktop" name="KDE"/>
+
+    <utility module_path=".*/parameterised_accounts">
+      <input into="accounts">
+        <value>{"username":"test","password":"tiaspbiqe2r","super_user":"true","strings_to_leak":[],"leaked_filenames":[]}</value>
+      </input>
+    </utility>
+
+    <vulnerability module_path=".*redisdb_rce.*">
+      <input into="strings_to_leak">
+        <generator type="flag_generator"/>
+      </input>
+
+      <input into="leaked_filenames">
+        <generator type="filename_generator"/>
+        <generator type="filename_generator"/>
+      </input>
+
+      <input into="strings_to_store">
+        <value>Weekly backup completed successfully.</value>
+        <value>User session cache initialised.</value>
+      </input>
+    </vulnerability>
+
+    <network type="private_network">
+      <input into="IP_address">
+        <datastore access="1">IP_addresses</datastore>
+      </input>
+    </network>
+  </system>
+
+</scenario>
