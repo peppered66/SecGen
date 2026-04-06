@@ -1,0 +1,9 @@
+ class redisdb_rce::service {
+ 
+ #Creates a service for our redis install
+  service { 'redis-server':
+    ensure => running,
+    enable => true,
+    require => Package['redis-server'],
+  }
+ }
