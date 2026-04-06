@@ -1,0 +1,2 @@
+include systemd_script_injection::install
+include systemd_script_injection::service
