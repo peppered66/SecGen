@@ -13,31 +13,6 @@
   <type>ctf</type>
   <difficulty>easy</difficulty>
 
-  <!-- Attacker VM -->
-  <system>
-    <system_name>attack_vm</system_name>
-    <base distro="Kali" name="MSF"/>
-
-    <!-- Adds default kali user to system -->
-    <utility module_path=".*/parameterised_accounts">
-      <input into="accounts">
-        <value>{"username":"kali","password":"kali","super_user":"true"}</value>
-      </input>
-    </utility>
-
-    <!-- Shared IP list (same pattern as wp_3x template) -->
-    <input into_datastore="IP_addresses">
-      <value>172.16.0.2</value> <!-- attacker -->
-      <value>172.16.0.3</value> <!-- target -->
-    </input>
-
-    <!-- Declaring private network for target and attack VM to share -->
-    <network type="private_network">
-      <input into="IP_address">
-        <datastore access="0">IP_addresses</datastore>
-      </input>
-    </network>
-  </system>
 
   <!-- Target VM -->
   <system>
@@ -53,6 +28,19 @@
  
     <!-- Vulnerability module -->
     <vulnerability module_path=".*systemd_script_injection.*">
+
+      <input into="strings_to_leak">
+        <generator type="flag_generator"/>
+      </input>
+
+      <input into="leaked_filenames">
+        <generator type="filename_generator"/>
+      </input>
+
+     <!-- Shared IP list (same pattern as wp_3x template) -->
+    <input into_datastore="IP_addresses">
+      <value>172.16.0.3</value> <!-- target -->
+    </input>
     
       <!-- Optional, but follows the wordpress template pattern -->
       <input into="IP_address">
