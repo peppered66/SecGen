@@ -1,4 +1,4 @@
-class ssh_permit_empty_passwords::config {
+class ssh_permit_empty_password::config {
 
 
  #Ensures SSH uses password authentication (settings we change)
@@ -33,7 +33,4 @@ class ssh_permit_empty_passwords::config {
       File_line['sshd_use_pam'],
     ],
   }
-
-
-
 }

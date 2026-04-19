@@ -21,10 +21,6 @@
   <platform>unix</platform>
 
 
-  <requires>
-    <module_path>utilities/unix/puppet_module/ssh</module_path>
-  </requires>
-
   <CyBOK KA="AAA" topic="Authorisation">
     <keyword>authentication</keyword>
     <keyword>access control</keyword>
